@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import AuthShell from "@/components/layout/AuthShell";
-import InputField from "@/components/ui/InputField";
+import { InputField } from "@/components/ui/InputField";
 import Button from "@/components/ui/Button";
 import { loginSchema, LoginValues } from "@/lib/schemas/auth";
 

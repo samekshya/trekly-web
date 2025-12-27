@@ -9,7 +9,7 @@ export default function HomePage() {
       <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
         <Link href="/login">Go to Login</Link>
         <Link href="/register">Go to Register</Link>
-        <Link href="/auth/dashboard">Go to Dashboard</Link>
+        <Link href="/dashboard">Go to Dashboard</Link>
       </div>
     </main>
   );
