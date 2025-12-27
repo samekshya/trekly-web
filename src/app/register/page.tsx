@@ -5,9 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import AuthShell from "@/components/layout/AuthShell";
+import { InputField } from "@/components/ui/InputField";
 import Button from "@/components/ui/Button";
-import InputField from "@/components/ui/InputField";
-import { registerSchema, RegisterValues } from "@/lib/schemas/auth";
+import { loginSchema, LoginValues, registerSchema, RegisterValues } from "@/lib/schemas/auth";
+
 
 export default function RegisterPage() {
   const router = useRouter();

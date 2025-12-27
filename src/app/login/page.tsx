@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import AuthShell from "@/components/layout/AuthShell";
-import Button from "@/components/ui/Button";
 import InputField from "@/components/ui/InputField";
+import Button from "@/components/ui/Button";
 import { loginSchema, LoginValues } from "@/lib/schemas/auth";
 
 export default function LoginPage() {
@@ -18,11 +18,14 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (values: LoginValues) => {
-    console.log("Login:", values);
+    console.log(values);
     router.push("/auth/dashboard");
   };
 
@@ -35,21 +38,19 @@ export default function LoginPage() {
         <InputField
           label="Email"
           type="email"
-          placeholder="you@example.com"
-          {...register("email")}
           error={errors.email?.message}
+          {...register("email")}
         />
 
         <InputField
           label="Password"
           type="password"
-          placeholder="••••••••"
-          {...register("password")}
           error={errors.password?.message}
+          {...register("password")}
         />
 
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Logging in..." : "Login"}
+          Login
         </Button>
       </form>
     </AuthShell>
