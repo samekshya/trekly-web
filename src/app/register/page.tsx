@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import api from "@/lib/api";
+
 
 import AuthShell from "@/components/layout/AuthShell";
 import { InputField } from "@/components/ui/InputField";
@@ -28,9 +30,25 @@ export default function RegisterPage() {
   });
 
   const onSubmit = async (values: RegisterValues) => {
-    console.log("Register:", values);
+  try {
+    await api.post("/auth/register", {
+      name: values.fullName,
+      email: values.email,
+      password: values.password,
+    });
+
     router.push("/login");
-  };
+  } catch (err: any) {
+    console.log(err?.response?.data || err);
+    alert(err?.response?.data?.message || "Registration failed");
+  }
+};
+
+
+  // const onSubmit = async (values: RegisterValues) => {
+  //   console.log("Register:", values);
+  //   router.push("/login");
+  // };
 
   return (
     <AuthShell title="Create account" subtitle="Register to get started">
