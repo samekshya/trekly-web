@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import api from "@/lib/api";
+
 
 import AuthShell from "@/components/layout/AuthShell";
 import { InputField } from "@/components/ui/InputField";
@@ -25,9 +27,24 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (values: LoginValues) => {
-    console.log(values);
-    router.push("/auth/dashboard");
-  };
+  try {
+    await api.post("/auth/login", {
+      email: values.email,
+      password: values.password,
+    });
+
+    router.push("/dashboard");
+  } catch (err: any) {
+    console.log(err?.response?.data || err);
+    alert(err?.response?.data?.message || "Login failed");
+  }
+};
+
+
+  // const onSubmit = async (values: LoginValues) => {
+  //   console.log(values);
+  //   router.push("/auth/dashboard");
+  // };
 
   return (
     <AuthShell title="Welcome back" subtitle="Login to continue">
