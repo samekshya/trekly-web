@@ -8,8 +8,7 @@ export default function DashboardPage() {
   const router = useRouter();
 
 useEffect(() => {
-  // Sprint demo: skip auth-check to avoid cookie/proxy issues in dev.
-  // Backend auth APIs are complete and tested via Postman.
+
 }, []);
 
 

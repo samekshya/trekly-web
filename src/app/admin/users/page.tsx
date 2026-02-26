@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import api from '@/config/api'; // This is the axios config we made in Step 15
+import api from '@/api/api';// This is the axios config 
 import AdminLayout from '@/components/layout/AdminLayout';
 
 export default function UsersAdminPage() {
