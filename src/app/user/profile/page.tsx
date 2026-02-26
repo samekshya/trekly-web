@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
+import api from "@/api/api";
 
 type MeUser = {
   _id: string;
@@ -120,11 +120,4 @@ export default function UserProfilePage() {
   );
 }
 
-// export default function UserProfilePage() {
-//   return (
-//     <div style={{ padding: 24 }}>
-//       <h1>/user/profile</h1>
-//       <p>If you can see this, you are logged in.</p>
-//     </div>
-//   );
-// }
+
