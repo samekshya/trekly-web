@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/lib/api";
+import api from "@/api/api";
 
 
 import AuthShell from "@/components/layout/AuthShell";
