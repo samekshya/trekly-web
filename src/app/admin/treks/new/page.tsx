@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import AdminLayout from "@/components/layout/AdminLayout";
+
 
 export default function CreateTrekPage() {
   const router = useRouter();
@@ -67,69 +69,87 @@ export default function CreateTrekPage() {
     }
   };
 
-  return (
-    <div style={{ padding: "20px", maxWidth: "500px" }}>
-      <h1>Create New Trek</h1>
+    return (
+    <AdminLayout>
+      <div className="p-6 flex justify-center">
+        <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            Create New Trek
+          </h1>
 
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+          {error && (
+            <p className="mb-4 text-sm text-red-600">Error: {error}</p>
+          )}
 
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-      >
-        <input
-          name="name"
-          placeholder="Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-        />
-        <input
-          name="location"
-          placeholder="Location"
-          value={form.location}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="duration"
-          placeholder="Duration (days)"
-          value={form.duration}
-          onChange={handleChange}
-        />
-        <select
-          name="difficulty"
-          value={form.difficulty}
-          onChange={handleChange}
-        >
-          <option value="Easy">Easy</option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
-        </select>
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={form.price}
-          onChange={handleChange}
-        />
-        <input
-          name="imageUrl"
-          placeholder="Image URL"
-          value={form.imageUrl}
-          onChange={handleChange}
-        />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              name="name"
+              placeholder="Name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={form.description}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <input
+              name="location"
+              placeholder="Location"
+              value={form.location}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <input
+              type="number"
+              name="duration"
+              placeholder="Duration (days)"
+              value={form.duration}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <select
+              name="difficulty"
+              value={form.difficulty}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 bg-white"
+            >
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+            <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              value={form.price}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <input
+              name="imageUrl"
+              placeholder="Image URL"
+              value={form.imageUrl}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2"
+            />
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Create Trek"}
-        </button>
-      </form>
-    </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-700 text-white py-2 rounded-lg font-semibold hover:bg-green-800 transition disabled:opacity-50"
+            >
+              {loading ? "Creating..." : "Create Trek"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </AdminLayout>
   );
 }
+
+
