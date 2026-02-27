@@ -44,6 +44,35 @@ export default function AdminTreksPage() {
     fetchTreks();
   }, []);
 
+    const handleDelete = async (id: string) => {
+    const yes = window.confirm("Are you sure you want to delete this trek?");
+    if (!yes) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`http://localhost:5050/api/treks/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        alert(data.message || "Failed to delete trek");
+        return;
+      }
+
+      setTreks((prev) => prev.filter((t) => t._id !== id));
+    } catch (err) {
+      alert("Error deleting trek");
+    }
+  };
+
+
   if (loading) {
     return <div style={{ padding: "20px" }}>Loading treks...</div>;
   }
