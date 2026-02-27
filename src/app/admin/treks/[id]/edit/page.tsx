@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import AdminLayout from "@/components/layout/AdminLayout";
 
 interface TrekForm {
   name: string;
@@ -29,6 +30,7 @@ export default function EditTrekPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   // 1. Fetch existing trek
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function EditTrekPage() {
         const data = await res.json();
 
         if (!res.ok) {
-          alert(data.message || "Could not find trek");
+          setError(data.message || "Could not find trek");
           return;
         }
 
@@ -59,8 +61,8 @@ export default function EditTrekPage() {
           imageUrl: data.data.imageUrl,
           price: data.data.price,
         });
-      } catch (err) {
-        alert("Error loading trek");
+      } catch (err: any) {
+        setError("Error loading trek");
       } finally {
         setLoading(false);
       }
@@ -75,6 +77,7 @@ export default function EditTrekPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError("");
 
     try {
       const token = localStorage.getItem("token");
@@ -91,98 +94,141 @@ export default function EditTrekPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Update failed!");
+        setError(data.message || "Update failed!");
         return;
       }
 
       alert("Trek updated successfully!");
       router.push("/admin/treks");
-    } catch (err) {
-      alert("Update failed!");
+    } catch (err: any) {
+      setError("Update failed!");
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) return <p style={{ padding: 20 }}>Loading trek data...</p>;
+  if (loading) {
+    return (
+      <AdminLayout>
+        <p className="p-6">Loading trek data...</p>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <p className="p-6 text-red-600">Error: {error}</p>
+      </AdminLayout>
+    );
+  }
 
   return (
-    <div style={{ padding: 20, maxWidth: 600 }}>
-      <h1>Edit Trek</h1>
+    <AdminLayout>
+      <div className="p-6 flex justify-center">
+        <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            Edit Trek
+          </h1>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: 10 }}
-      >
-        <input
-          type="text"
-          placeholder="Name"
-          value={formData.name}
-          onChange={(e) =>
-            setFormData({ ...formData, name: e.target.value })
-          }
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={formData.location}
-          onChange={(e) =>
-            setFormData({ ...formData, location: e.target.value })
-          }
-        />
-        <input
-          type="number"
-          placeholder="Duration (days)"
-          value={formData.duration}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              duration: Number(e.target.value),
-            })
-          }
-        />
-        <select
-          value={formData.difficulty}
-          onChange={(e) =>
-            setFormData({ ...formData, difficulty: e.target.value })
-          }
-        >
-          <option value="Easy">Easy</option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Price"
-          value={formData.price}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              price: Number(e.target.value),
-            })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={formData.imageUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, imageUrl: e.target.value })
-          }
-        />
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
+            <input
+              type="text"
+              placeholder="Name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              required
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <textarea
+              placeholder="Description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  description: e.target.value,
+                })
+              }
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <input
+              type="text"
+              placeholder="Location"
+              value={formData.location}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  location: e.target.value,
+                })
+              }
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <input
+              type="number"
+              placeholder="Duration (days)"
+              value={formData.duration}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  duration: Number(e.target.value),
+                })
+              }
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <select
+              value={formData.difficulty}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  difficulty: e.target.value,
+                })
+              }
+              className="w-full border rounded-lg px-3 py-2 bg-white"
+            >
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+            <input
+              type="number"
+              placeholder="Price"
+              value={formData.price}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  price: Number(e.target.value),
+                })
+              }
+              className="w-full border rounded-lg px-3 py-2"
+            />
+            <input
+              type="text"
+              placeholder="Image URL"
+              value={formData.imageUrl}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  imageUrl: e.target.value,
+                })
+              }
+              className="w-full border rounded-lg px-3 py-2"
+            />
 
-        <button type="submit" disabled={saving}>
-          {saving ? "Saving..." : "Save Changes"}
-        </button>
-      </form>
-    </div>
+            <button
+              type="submit"
+              disabled={saving}
+              className="w-full bg-green-700 text-white py-2 rounded-lg font-semibold hover:bg-green-800 transition disabled:opacity-50"
+            >
+              {saving ? "Saving..." : "Save Changes"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </AdminLayout>
   );
 }
