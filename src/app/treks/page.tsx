@@ -40,68 +40,74 @@ export default function UserTreksPage() {
     fetchTreks();
   }, []);
 
-  if (loading) {
-    return <div style={{ padding: 20 }}>Loading treks...</div>;
+    if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <p className="text-gray-600">Loading treks...</p>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div style={{ padding: 20, color: "red" }}>
-        Error: {error}
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <p className="text-red-600">Error: {error}</p>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>User Treks</h1>
-      {treks.length === 0 ? (
-        <p>No treks available right now.</p>
-      ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-            gap: 16,
-          }}
-        >
-          {treks.map((trek) => (
-            <div
-              key={trek._id}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: 8,
-                padding: 12,
-              }}
-            >
-              {trek.imageUrl && (
-                <img
-                  src={trek.imageUrl}
-                  alt={trek.name}
-                  style={{
-                    width: "100%",
-                    height: 150,
-                    objectFit: "cover",
-                    borderRadius: 8,
-                    marginBottom: 8,
-                  }}
-                />
-              )}
-              <h2>
-                <a href={`/treks/${trek._id}`} style={{ color: "blue" }}>
-                 {trek.name}
-                </a>
-              </h2>
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Discover Treks
+        </h1>
 
-              <p>{trek.location}</p>
-              <p>
-                {trek.duration} days · {trek.difficulty}
-              </p>
-              <p>Rs. {trek.price}</p>
-            </div>
-          ))}
-        </div>
-      )}
+        {treks.length === 0 ? (
+          <p className="text-gray-600">No treks available right now.</p>
+        ) : (
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {treks.map((trek) => (
+              <div
+                key={trek._id}
+                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition"
+              >
+                {trek.imageUrl && (
+                  <img
+                    src={trek.imageUrl}
+                    alt={trek.name}
+                    className="w-full h-44 object-cover"
+                  />
+                )}
+
+                <div className="p-4 space-y-2">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    <a
+                      href={`/treks/${trek._id}`}
+                      className="hover:text-green-700"
+                    >
+                      {trek.name}
+                    </a>
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    {trek.location}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {trek.duration} days ·{" "}
+                    <span className="font-medium">
+                      {trek.difficulty}
+                    </span>
+                  </p>
+                  <p className="text-base font-bold text-green-700">
+                    Rs. {trek.price}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
+
