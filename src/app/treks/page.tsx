@@ -87,7 +87,12 @@ export default function UserTreksPage() {
                   }}
                 />
               )}
-              <h2>{trek.name}</h2>
+              <h2>
+                <a href={`/treks/${trek._id}`} style={{ color: "blue" }}>
+                 {trek.name}
+                </a>
+              </h2>
+
               <p>{trek.location}</p>
               <p>
                 {trek.duration} days · {trek.difficulty}
