@@ -43,7 +43,7 @@ export default function RegisterPage() {
 
   return (
     <AuthShell
-      title="Create account 🏔️"
+      title="Create account"
       subtitle="Join Trekly and start your adventure"
       footerText="Already have an account?"
       footerLink="/login"
@@ -88,19 +88,27 @@ export default function RegisterPage() {
         />
 
         <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-green-700 text-white py-3 rounded-xl font-semibold text-base hover:bg-green-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? (
-            <span className="flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              Creating account...
-            </span>
-          ) : (
-            "Create account"
-          )}
-        </button>
+  type="submit"
+  disabled={isSubmitting}
+  style={{
+    width: "100%",
+    padding: "14px",
+    backgroundColor: "#16a34a",
+    color: "white",
+    border: "none",
+    borderRadius: 12,
+    fontSize: 15,
+    fontWeight: 700,
+    cursor: isSubmitting ? "not-allowed" : "pointer",
+    opacity: isSubmitting ? 0.7 : 1,
+    marginTop: 8,
+    letterSpacing: "0.02em",
+    boxShadow: "0 4px 14px rgba(22,163,74,0.4)",
+    transition: "all 0.2s",
+  }}
+>
+  {isSubmitting ? "Creating account..." : "Create account →"}
+</button>
       </form>
     </AuthShell>
   );

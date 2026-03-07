@@ -6,11 +6,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body style={{ margin: 0, fontFamily: "system-ui, Arial" }}>
         <Navbar />
-        {children}
+        <main style={{ minHeight: "100vh" }}>
+          {children}
+        </main>
       </body>
     </html>
   );
 }
-
-
-
