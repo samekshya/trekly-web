@@ -303,7 +303,7 @@ export default function UserTreksPage() {
                         padding: "5px 12px", borderRadius: 999,
                         fontSize: 12, fontWeight: 600,
                       }}>
-                        {trek.duration} days
+                        {trek.duration} {trek.duration === 1 ? "day" : "days"}
                       </div>
                     </div>
 
