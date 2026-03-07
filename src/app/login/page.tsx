@@ -46,7 +46,7 @@ export default function LoginPage() {
 
   return (
     <AuthShell
-      title="Welcome back"
+      title="Welcome back "
       subtitle="Login to your Trekly account"
       footerText="Don't have an account?"
       footerLink="/register"
@@ -74,6 +74,15 @@ export default function LoginPage() {
           error={errors.password?.message}
           {...register("password")}
         />
+
+        <div style={{ textAlign: "right", marginTop: -12 }}>
+  <a href="/forgot-password" style={{
+    fontSize: 13, color: "#16a34a", textDecoration: "none", fontWeight: 600,
+  }}>
+    Forgot password?
+  </a>
+</div>
+
 
         <button
   type="submit"
