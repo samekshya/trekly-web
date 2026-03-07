@@ -86,13 +86,26 @@ export default function TrekDetailsPage() {
   };
 
   const handleConfirmBooking = async () => {
-    if (!bookingData.date) { alert("Please select a date"); return; }
-    setBookingLoading(true);
-    // Simulate API call
-    await new Promise(r => setTimeout(r, 1500));
-    setBookingLoading(false);
+  if (!bookingData.date) { alert("Please select a date"); return; }
+  setBookingLoading(true);
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:5050/api/treks/${id}/book`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(bookingData),
+    });
+    if (!res.ok) throw new Error("Booking failed");
     setBookingSuccess(true);
-  };
+  } catch (err) {
+    alert("Something went wrong. Please try again.");
+  } finally {
+    setBookingLoading(false);
+  }
+};
 
   const resetBooking = () => {
     setShowBooking(false);
