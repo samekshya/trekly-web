@@ -17,24 +17,25 @@ export function InputField({
   ...rest
 }: Props) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <label style={{ fontWeight: 600, fontSize: 14 }}>{label}</label>
+    <div className="flex flex-col gap-1.5">
+      <label className="text-sm font-semibold text-gray-700">{label}</label>
 
       <input
         type={type}
         placeholder={placeholder}
         {...rest}
-        style={{
-          padding: "10px 12px",
-          borderRadius: 10,
-          border: error ? "1px solid #e11d48" : "1px solid #d1d5db",
-          outline: "none",
-        }}
+        className={`w-full px-4 py-3 rounded-xl border text-sm text-gray-800 placeholder-gray-400 outline-none transition focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+          error
+            ? "border-red-400 bg-red-50 focus:ring-red-400"
+            : "border-gray-200 bg-gray-50 hover:border-gray-300"
+        }`}
       />
 
-      {error ? (
-        <span style={{ color: "#e11d48", fontSize: 12 }}>{error}</span>
-      ) : null}
+      {error && (
+        <span className="text-red-500 text-xs flex items-center gap-1">
+          ⚠️ {error}
+        </span>
+      )}
     </div>
   );
 }
