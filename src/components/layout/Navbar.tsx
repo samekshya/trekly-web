@@ -1,38 +1,38 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
+
+  // Hide navbar on admin pages
+  if (pathname?.startsWith("/admin")) return null;
+
   return (
-    <header
-      style={{
-        padding: "14px 20px",
-        borderBottom: "1px solid #e5e7eb",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <Link
-        href="/"
-        style={{ fontWeight: 900, textDecoration: "none", color: "#111827" }}
-      >
-        Trekly Web
+    <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
+      <Link href="/" className="text-xl font-bold text-green-700">
+        🏔️ Trekly
       </Link>
 
-      <nav style={{ display: "flex", gap: 14 }}>
-        <Link href="/login" style={{ textDecoration: "none", color: "#111827" }}>
+      <nav className="flex items-center gap-6">
+        <Link
+          href="/treks"
+          className="text-gray-600 hover:text-green-700 font-medium transition"
+        >
+          Explore Treks
+        </Link>
+        <Link
+          href="/login"
+          className="text-gray-600 hover:text-green-700 font-medium transition"
+        >
           Login
         </Link>
         <Link
           href="/register"
-          style={{ textDecoration: "none", color: "#111827" }}
+          className="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-800 transition"
         >
           Register
-        </Link>
-        <Link
-          href="/auth/dashboard"
-          style={{ textDecoration: "none", color: "#111827" }}
-        >
-          Dashboard
         </Link>
       </nav>
     </header>
