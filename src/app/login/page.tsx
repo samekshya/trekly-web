@@ -28,12 +28,23 @@ export default function LoginPage() {
 
   const onSubmit = async (values: LoginValues) => {
   try {
-    await api.post("/auth/login", {
+    const res = await api.post("/auth/login", {
       email: values.email,
       password: values.password,
     });
 
-    router.push("/dashboard");
+    const { token, user } = res.data.data;
+
+    // Save token and user to localStorage
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // Redirect based on role
+    if (user.role === "admin") {
+      router.push("/admin/treks");
+    } else {
+      router.push("/dashboard");
+    }
   } catch (err: any) {
     console.log(err?.response?.data || err);
     alert(err?.response?.data?.message || "Login failed");
