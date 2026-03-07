@@ -20,25 +20,41 @@ export default function AuthShell({
   footerLinkText,
 }: AuthShellProps) {
   return (
-    <main className="min-h-screen flex">
+    <main className="h-screen flex overflow-hidden">
       {/* Left Side - Form */}
-      <div className="flex-1 flex flex-col justify-center items-center px-8 py-12 bg-white">
+      <div className="flex-1 flex flex-col justify-center items-center px-16 bg-white">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 mb-10">
-          <Image src="/treklylogo.png" alt="Trekly" width={45} height={45} className="object-contain" />
-          <span className="text-2xl font-bold text-green-700">Trekly</span>
-        </Link>
-
-        {/* Card */}
         <div className="w-full max-w-md">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
-          {subtitle && <p className="text-gray-500 mb-8">{subtitle}</p>}
+          <Link href="/" className="flex items-center gap-3 mb-12">
+            <Image
+              src="/treklylogo.png"
+              alt="Trekly"
+              width={50}
+              height={50}
+              className="object-contain"
+            />
+            <span className="text-2xl font-bold text-green-700">Trekly</span>
+          </Link>
+
+          {/* Heading */}
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="text-gray-400 text-base mb-8">{subtitle}</p>
+          )}
+
+          {/* Form */}
           {children}
 
+          {/* Footer */}
           {footerText && footerLink && (
-            <p className="text-center text-sm text-gray-500 mt-6">
+            <p className="text-center text-sm text-gray-400 mt-8">
               {footerText}{" "}
-              <Link href={footerLink} className="text-green-700 font-semibold hover:underline">
+              <Link
+                href={footerLink}
+                className="text-green-700 font-semibold hover:underline"
+              >
                 {footerLinkText}
               </Link>
             </p>
@@ -46,32 +62,51 @@ export default function AuthShell({
         </div>
       </div>
 
-      {/* Right Side - Image */}
-      <div className="hidden lg:flex flex-1 relative">
+      {/* Right Side - Full height image */}
+      <div className="hidden lg:block w-[55%] relative">
         <img
-          src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200"
+          src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400"
           alt="Mountains"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-green-900/60 flex flex-col justify-end p-12">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Discover Nepal's<br />Hidden Treasures
-          </h2>
-          <p className="text-green-100 text-lg max-w-md">
-            Join thousands of trekkers exploring the most beautiful mountains in the world.
-          </p>
-          <div className="flex gap-6 mt-8">
-            <div>
-              <p className="text-3xl font-bold text-white">500+</p>
-              <p className="text-green-200 text-sm">Happy Trekkers</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-white">12+</p>
-              <p className="text-green-200 text-sm">Trek Routes</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-white">100%</p>
-              <p className="text-green-200 text-sm">Safe & Guided</p>
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-900/80 to-black/50" />
+
+        {/* Content on image */}
+        <div className="absolute inset-0 flex flex-col justify-between p-14">
+          {/* Top badge */}
+          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm w-fit px-4 py-2 rounded-full">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-white text-sm font-medium">
+              Nepal's #1 Trekking Platform
+            </span>
+          </div>
+
+          {/* Bottom content */}
+          <div>
+            <h2 className="text-5xl font-extrabold text-white mb-4 leading-tight">
+              Your Next<br />
+              <span className="text-green-400">Adventure</span><br />
+              Awaits
+            </h2>
+            <p className="text-gray-300 text-lg mb-10 max-w-sm">
+              Explore breathtaking trails, expert guides, and unforgettable experiences in the Himalayas.
+            </p>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+                <p className="text-3xl font-extrabold text-white">500+</p>
+                <p className="text-green-300 text-sm mt-1">Happy Trekkers</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+                <p className="text-3xl font-extrabold text-white">12+</p>
+                <p className="text-green-300 text-sm mt-1">Trek Routes</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+                <p className="text-3xl font-extrabold text-white">100%</p>
+                <p className="text-green-300 text-sm mt-1">Safe & Guided</p>
+              </div>
             </div>
           </div>
         </div>
