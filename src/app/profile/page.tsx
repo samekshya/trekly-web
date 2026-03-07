@@ -22,28 +22,37 @@ export default function ProfilePage() {
   const [msg, setMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const stored = localStorage.getItem("user");
-    if (!token || !stored) { router.push("/login"); return; }
+  const token = localStorage.getItem("token");
+  const stored = localStorage.getItem("user");
+  if (!token || !stored) { router.push("/login"); return; }
 
-    const fetchMe = async () => {
-      try {
-        const res = await fetch("http://localhost:5050/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        const user = data?.user ?? data;
-        setMe(user);
-        setName(user?.name ?? "");
-        setEmail(user?.email ?? "");
-      } catch {
-        setMsg({ type: "error", text: "Failed to load profile" });
-      } finally {
-        setLoading(false);
+  // Pre-fill immediately from localStorage
+  const storedUser = JSON.parse(stored);
+  setName(storedUser.name || "");
+  setEmail(storedUser.email || "");
+  setMe({
+    _id: storedUser.id || storedUser._id,
+    name: storedUser.name,
+    email: storedUser.email,
+    role: storedUser.role,
+  });
+  setLoading(false);
+
+  // Also fetch fresh from API in background
+  fetch("http://localhost:5050/api/auth/me", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(r => r.json())
+    .then(data => {
+      const user = data?.user ?? data;
+      if (user?.name) {
+        setMe({ _id: user._id || user.id, name: user.name, email: user.email, role: user.role });
+        setName(user.name);
+        setEmail(user.email);
       }
-    };
-    fetchMe();
-  }, []);
+    })
+    .catch(console.error);
+}, []);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
