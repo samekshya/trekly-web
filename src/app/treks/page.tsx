@@ -20,6 +20,7 @@ export default function UserTreksPage() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("All");
+  const [sortBy, setSortBy] = useState("default");
 
   useEffect(() => {
     const fetchTreks = async () => {
@@ -37,13 +38,20 @@ export default function UserTreksPage() {
     fetchTreks();
   }, []);
 
-  const filtered = treks.filter((t) => {
-    const matchSearch =
-      t.name.toLowerCase().includes(search.toLowerCase()) ||
-      t.location.toLowerCase().includes(search.toLowerCase());
-    const matchDiff = difficulty === "All" || t.difficulty === difficulty;
-    return matchSearch && matchDiff;
-  });
+  const filtered = treks
+    .filter((t) => {
+      const matchSearch =
+        t.name.toLowerCase().includes(search.toLowerCase()) ||
+        t.location.toLowerCase().includes(search.toLowerCase());
+      const matchDiff = difficulty === "All" || t.difficulty === difficulty;
+      return matchSearch && matchDiff;
+    })
+    .sort((a, b) => {
+      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-desc") return b.price - a.price;
+      if (sortBy === "duration-asc") return a.duration - b.duration;
+      return 0;
+    });
 
   const difficultyColor = (d: string) => {
     if (d === "Easy") return { bg: "#dcfce7", color: "#16a34a" };
@@ -51,11 +59,13 @@ export default function UserTreksPage() {
     return { bg: "#fee2e2", color: "#dc2626" };
   };
 
-  return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f8fafc", paddingTop: 80 }}>
+  const countByDiff = (d: string) => treks.filter((t) => t.difficulty === d).length;
 
-      {/* ===== HERO BANNER ===== */}
-      <div style={{ position: "relative", height: 280, overflow: "hidden" }}>
+  return (
+    <div style={{ minHeight: "100vh", backgroundColor: "#f8fafc", paddingTop: 72 }}>
+
+      {/* ===== HERO ===== */}
+      <div style={{ position: "relative", height: 320, overflow: "hidden" }}>
         <img
           src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1800"
           alt="Treks"
@@ -63,110 +73,175 @@ export default function UserTreksPage() {
         />
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7))",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.75))",
           display: "flex", flexDirection: "column",
           justifyContent: "center", alignItems: "center",
         }}>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", marginBottom: 12 }}>
+          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: 700, letterSpacing: "0.2em", marginBottom: 12 }}>
             EXPLORE NEPAL
           </p>
           <h1 style={{
-            fontSize: 52, fontWeight: 900, color: "white",
+            fontSize: 56, fontWeight: 900, color: "white",
             letterSpacing: "-0.02em", marginBottom: 12, textAlign: "center",
+            textShadow: "0 2px 20px rgba(0,0,0,0.3)",
           }}>
             Find Your Perfect Trek
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 16 }}>
-            {treks.length} adventures waiting for you
+          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 17, marginBottom: 32 }}>
+            {treks.length} handpicked adventures across Nepal
           </p>
+
+          {/* Hero Search Bar */}
+          <div style={{
+            display: "flex",
+            backgroundColor: "white",
+            borderRadius: 16,
+            overflow: "hidden",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+            width: "100%",
+            maxWidth: 560,
+          }}>
+            <span style={{ padding: "0 16px", display: "flex", alignItems: "center", fontSize: 18 }}>🔍</span>
+            <input
+              type="text"
+              placeholder="Search by trek name or location..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                flex: 1, padding: "16px 0",
+                border: "none", outline: "none",
+                fontSize: 15, color: "#0f172a",
+                backgroundColor: "transparent",
+              }}
+            />
+            <button style={{
+              backgroundColor: "#16a34a",
+              color: "white",
+              padding: "0 28px",
+              border: "none",
+              fontWeight: 700,
+              fontSize: 15,
+              cursor: "pointer",
+            }}>
+              Search
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* ===== SEARCH & FILTER BAR ===== */}
+      {/* ===== FILTER BAR ===== */}
       <div style={{
         backgroundColor: "white",
         borderBottom: "1px solid #f1f5f9",
-        padding: "20px 80px",
+        padding: "16px 80px",
         display: "flex",
         alignItems: "center",
-        gap: 16,
+        gap: 12,
         position: "sticky",
         top: 72,
         zIndex: 40,
         boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
       }}>
-        {/* Search */}
-        <div style={{ position: "relative", flex: 1, maxWidth: 400 }}>
-          <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", fontSize: 16 }}>🔍</span>
-          <input
-            type="text"
-            placeholder="Search treks or locations..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "12px 16px 12px 42px",
-              borderRadius: 12,
-              border: "1.5px solid #e2e8f0",
-              backgroundColor: "#f8fafc",
-              fontSize: 14,
-              outline: "none",
-              color: "#0f172a",
-            }}
-          />
-        </div>
-
-        {/* Difficulty Filter */}
-        <div style={{ display: "flex", gap: 8 }}>
-          {["All", "Easy", "Moderate", "Hard"].map((d) => (
+        {/* Difficulty Filters */}
+        <div style={{ display: "flex", gap: 8, flex: 1 }}>
+          {[
+            { label: "All Treks", value: "All", icon: "🏔️", count: treks.length },
+            { label: "Easy", value: "Easy", icon: "🟢", count: countByDiff("Easy") },
+            { label: "Moderate", value: "Moderate", icon: "🟡", count: countByDiff("Moderate") },
+            { label: "Hard", value: "Hard", icon: "🔴", count: countByDiff("Hard") },
+          ].map((d) => (
             <button
-              key={d}
-              onClick={() => setDifficulty(d)}
+              key={d.value}
+              onClick={() => setDifficulty(d.value)}
               style={{
-                padding: "10px 20px",
+                padding: "10px 18px",
                 borderRadius: 10,
                 border: "1.5px solid",
-                borderColor: difficulty === d ? "#16a34a" : "#e2e8f0",
-                backgroundColor: difficulty === d ? "#16a34a" : "white",
-                color: difficulty === d ? "white" : "#64748b",
+                borderColor: difficulty === d.value ? "#16a34a" : "#e2e8f0",
+                backgroundColor: difficulty === d.value ? "#16a34a" : "white",
+                color: difficulty === d.value ? "white" : "#64748b",
                 fontWeight: 600,
                 fontSize: 13,
                 cursor: "pointer",
                 transition: "all 0.2s",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
               }}
             >
-              {d === "Easy" ? "🟢" : d === "Moderate" ? "🟡" : d === "Hard" ? "🔴" : "🏔️"} {d}
+              {d.icon} {d.label}
+              <span style={{
+                backgroundColor: difficulty === d.value ? "rgba(255,255,255,0.25)" : "#f1f5f9",
+                color: difficulty === d.value ? "white" : "#64748b",
+                padding: "1px 7px",
+                borderRadius: 999,
+                fontSize: 11,
+                fontWeight: 700,
+              }}>
+                {d.count}
+              </span>
             </button>
           ))}
         </div>
 
-        {/* Results count */}
-        <p style={{ color: "#94a3b8", fontSize: 14, marginLeft: "auto", whiteSpace: "nowrap" }}>
+        {/* Sort */}
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          style={{
+            padding: "10px 16px",
+            borderRadius: 10,
+            border: "1.5px solid #e2e8f0",
+            backgroundColor: "white",
+            fontSize: 13,
+            fontWeight: 600,
+            color: "#64748b",
+            outline: "none",
+            cursor: "pointer",
+          }}
+        >
+          <option value="default">Sort by: Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="duration-asc">Duration: Shortest First</option>
+        </select>
+
+        <p style={{ color: "#94a3b8", fontSize: 13, whiteSpace: "nowrap" }}>
           {filtered.length} trek{filtered.length !== 1 ? "s" : ""} found
         </p>
       </div>
 
       {/* ===== TREK GRID ===== */}
-      <div style={{ maxWidth: 1400, margin: "0 auto", padding: "48px 80px" }}>
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "48px 60px" }}>
         {loading ? (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} style={{
-                height: 380, borderRadius: 20,
+                height: 400, borderRadius: 20,
                 backgroundColor: "#e2e8f0",
               }} />
             ))}
           </div>
         ) : error ? (
-          <div style={{ textAlign: "center", padding: "80px 0", color: "#ef4444" }}>
+          <div style={{ textAlign: "center", padding: "80px 0" }}>
             <p style={{ fontSize: 48, marginBottom: 16 }}>⚠️</p>
-            <p style={{ fontSize: 18, fontWeight: 600 }}>{error}</p>
+            <p style={{ fontSize: 18, fontWeight: 600, color: "#ef4444" }}>{error}</p>
           </div>
         ) : filtered.length === 0 ? (
           <div style={{ textAlign: "center", padding: "80px 0" }}>
             <p style={{ fontSize: 48, marginBottom: 16 }}>🏔️</p>
             <p style={{ fontSize: 18, fontWeight: 600, color: "#0f172a", marginBottom: 8 }}>No treks found</p>
-            <p style={{ color: "#94a3b8" }}>Try a different search or filter</p>
+            <p style={{ color: "#94a3b8", marginBottom: 24 }}>Try a different search or filter</p>
+            <button
+              onClick={() => { setSearch(""); setDifficulty("All"); }}
+              style={{
+                backgroundColor: "#16a34a", color: "white",
+                padding: "12px 28px", borderRadius: 10,
+                border: "none", fontWeight: 700, cursor: "pointer",
+              }}
+            >
+              Clear Filters
+            </button>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
@@ -183,6 +258,7 @@ export default function UserTreksPage() {
                       border: "1px solid #f1f5f9",
                       transition: "all 0.25s",
                       cursor: "pointer",
+                      height: "100%",
                     }}
                     onMouseEnter={e => {
                       (e.currentTarget as HTMLDivElement).style.transform = "translateY(-6px)";
@@ -200,7 +276,7 @@ export default function UserTreksPage() {
                           src={trek.imageUrl}
                           alt={trek.name}
                           style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s" }}
-                          onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
+                          onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
                           onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                         />
                       ) : (
@@ -211,28 +287,21 @@ export default function UserTreksPage() {
                           fontSize: 48,
                         }}>🏔️</div>
                       )}
-                      {/* Difficulty badge */}
                       <div style={{
                         position: "absolute", top: 14, left: 14,
-                        backgroundColor: diff.bg,
-                        color: diff.color,
-                        padding: "5px 12px",
-                        borderRadius: 999,
-                        fontSize: 12,
-                        fontWeight: 700,
+                        backgroundColor: diff.bg, color: diff.color,
+                        padding: "5px 12px", borderRadius: 999,
+                        fontSize: 12, fontWeight: 700,
                       }}>
                         {trek.difficulty}
                       </div>
-                      {/* Duration badge */}
                       <div style={{
                         position: "absolute", top: 14, right: 14,
                         backgroundColor: "rgba(0,0,0,0.55)",
                         backdropFilter: "blur(4px)",
                         color: "white",
-                        padding: "5px 12px",
-                        borderRadius: 999,
-                        fontSize: 12,
-                        fontWeight: 600,
+                        padding: "5px 12px", borderRadius: 999,
+                        fontSize: 12, fontWeight: 600,
                       }}>
                         {trek.duration} days
                       </div>
@@ -250,44 +319,33 @@ export default function UserTreksPage() {
                       }}>
                         {trek.name}
                       </h3>
-                      <p style={{
-                        fontSize: 13, color: "#94a3b8",
-                        marginBottom: 6,
-                        display: "flex", alignItems: "center", gap: 4,
-                      }}>
+                      <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 8, display: "flex", alignItems: "center", gap: 4 }}>
                         📍 {trek.location}
                       </p>
                       <p style={{
-                        fontSize: 13, color: "#64748b",
-                        marginBottom: 16,
+                        fontSize: 13, color: "#64748b", marginBottom: 16,
                         overflow: "hidden",
                         display: "-webkit-box",
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: "vertical" as any,
-                        lineHeight: 1.5,
+                        lineHeight: 1.6,
                       }}>
                         {trek.description}
                       </p>
                       <div style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        borderTop: "1px solid #f1f5f9",
-                        paddingTop: 14,
+                        display: "flex", justifyContent: "space-between", alignItems: "center",
+                        borderTop: "1px solid #f1f5f9", paddingTop: 14,
                       }}>
                         <div>
                           <p style={{ fontSize: 11, color: "#94a3b8", marginBottom: 2 }}>Starting from</p>
-                          <p style={{ fontSize: 20, fontWeight: 900, color: "#16a34a" }}>
+                          <p style={{ fontSize: 22, fontWeight: 900, color: "#16a34a" }}>
                             Rs. {trek.price?.toLocaleString()}
                           </p>
                         </div>
                         <div style={{
-                          backgroundColor: "#f0fdf4",
-                          color: "#16a34a",
-                          padding: "10px 18px",
-                          borderRadius: 10,
-                          fontSize: 13,
-                          fontWeight: 700,
+                          backgroundColor: "#f0fdf4", color: "#16a34a",
+                          padding: "10px 18px", borderRadius: 10,
+                          fontSize: 13, fontWeight: 700,
                         }}>
                           View Details →
                         </div>
