@@ -20,40 +20,101 @@ export default function AuthShell({
   footerLinkText,
 }: AuthShellProps) {
   return (
-    <main className="h-screen flex overflow-hidden">
-      {/* Left Side - Form */}
-      <div className="flex-1 flex flex-col justify-center items-center px-16 bg-white">
-        {/* Logo */}
-        <div className="w-full max-w-md">
-          <Link href="/" className="flex items-center gap-3 mb-12">
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        display: "flex",
+        overflow: "hidden",
+      }}
+    >
+      {/* ===== LEFT PANEL ===== */}
+      <div
+        style={{
+          width: "45%",
+          height: "100%",
+          backgroundColor: "#ffffff",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "0 60px",
+          overflowY: "auto",
+        }}
+      >
+        <div style={{ width: "100%", maxWidth: 400 }}>
+          {/* Logo */}
+          <Link
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 40,
+              textDecoration: "none",
+            }}
+          >
             <Image
               src="/treklylogo.png"
               alt="Trekly"
-              width={50}
-              height={50}
-              className="object-contain"
+              width={180}
+              height={180}
+              style={{ objectFit: "contain" }}
             />
-            <span className="text-2xl font-bold text-green-700">Trekly</span>
+            <span
+              style={{
+                fontSize: 22,
+                fontWeight: 800,
+                color: "#15803d",
+              }}
+            >
+              
+            </span>
           </Link>
 
-          {/* Heading */}
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">
+          {/* Title */}
+          <h1
+            style={{
+              fontSize: 32,
+              fontWeight: 800,
+              color: "#111827",
+              marginBottom: 8,
+              lineHeight: 1.2,
+            }}
+          >
             {title}
           </h1>
-          {subtitle && (
-            <p className="text-gray-400 text-base mb-8">{subtitle}</p>
-          )}
+          <p
+            style={{
+              fontSize: 15,
+              color: "#9ca3af",
+              marginBottom: 20,
+            }}
+          >
+            {subtitle}
+          </p>
 
           {/* Form */}
           {children}
 
           {/* Footer */}
           {footerText && footerLink && (
-            <p className="text-center text-sm text-gray-400 mt-8">
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: 14,
+                color: "#9ca3af",
+                marginTop: 28,
+              }}
+            >
               {footerText}{" "}
               <Link
                 href={footerLink}
-                className="text-green-700 font-semibold hover:underline"
+                style={{
+                  color: "#15803d",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
               >
                 {footerLinkText}
               </Link>
@@ -62,55 +123,140 @@ export default function AuthShell({
         </div>
       </div>
 
-      {/* Right Side - Full height image */}
-      <div className="hidden lg:block w-[55%] relative">
+      {/* ===== RIGHT PANEL ===== */}
+      <div
+        style={{
+          width: "55%",
+          height: "100%",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Background Image */}
         <img
           src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400"
           alt="Mountains"
-          className="w-full h-full object-cover"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+          }}
         />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-900/80 to-black/50" />
 
-        {/* Content on image */}
-        <div className="absolute inset-0 flex flex-col justify-between p-14">
-          {/* Top badge */}
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm w-fit px-4 py-2 rounded-full">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-white text-sm font-medium">
+        {/* Gradient Overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(135deg, rgba(5,46,22,0.85) 0%, rgba(0,0,0,0.4) 100%)",
+          }}
+        />
+
+        {/* Content */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: "48px 56px",
+          }}
+        >
+          {/* Top Badge */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              backgroundColor: "rgba(255,255,255,0.12)",
+              backdropFilter: "blur(8px)",
+              padding: "8px 18px",
+              borderRadius: 999,
+              width: "fit-content",
+              border: "1px solid rgba(255,255,255,0.2)",
+            }}
+          >
+            <div
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: "#4ade80",
+              }}
+            />
+            <span style={{ color: "white", fontSize: 13, fontWeight: 500 }}>
               Nepal's #1 Trekking Platform
             </span>
           </div>
 
-          {/* Bottom content */}
+          {/* Bottom Content */}
           <div>
-            <h2 className="text-5xl font-extrabold text-white mb-4 leading-tight">
-              Your Next<br />
-              <span className="text-green-400">Adventure</span><br />
+            <h2
+              style={{
+                fontSize: 52,
+                fontWeight: 900,
+                color: "white",
+                lineHeight: 1.1,
+                marginBottom: 20,
+              }}
+            >
+              Your Next
+              <br />
+              <span style={{ color: "#4ade80" }}>Adventure</span>
+              <br />
               Awaits
             </h2>
-            <p className="text-gray-300 text-lg mb-10 max-w-sm">
-              Explore breathtaking trails, expert guides, and unforgettable experiences in the Himalayas.
+            <p
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: 16,
+                lineHeight: 1.7,
+                maxWidth: 360,
+                marginBottom: 15,
+              }}
+            >
+              Explore breathtaking trails, expert guides, and unforgettable
+              experiences in the Himalayas.
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-                <p className="text-3xl font-extrabold text-white">500+</p>
-                <p className="text-green-300 text-sm mt-1">Happy Trekkers</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-                <p className="text-3xl font-extrabold text-white">12+</p>
-                <p className="text-green-300 text-sm mt-1">Trek Routes</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-                <p className="text-3xl font-extrabold text-white">100%</p>
-                <p className="text-green-300 text-sm mt-1">Safe & Guided</p>
-              </div>
+            <div style={{ display: "flex", gap: 16 }}>
+              {[
+                { value: "500+", label: "Happy Trekkers" },
+                { value: "12+", label: "Trek Routes" },
+                { value: "100%", label: "Safe & Guided" },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    backdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: 16,
+                    padding: "20px 24px",
+                    flex: 1,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 28,
+                      fontWeight: 800,
+                      color: "white",
+                      marginBottom: 4,
+                    }}
+                  >
+                    {stat.value}
+                  </p>
+                  <p style={{ fontSize: 12, color: "#86efac" }}>{stat.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

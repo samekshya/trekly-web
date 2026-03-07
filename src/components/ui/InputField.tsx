@@ -9,32 +9,38 @@ type Props = {
   error?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export function InputField({
-  label,
-  type = "text",
-  placeholder,
-  error,
-  ...rest
-}: Props) {
+export function InputField({ label, type = "text", placeholder, error, ...rest }: Props) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-semibold text-gray-700">{label}</label>
-
+    <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+      <label style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>
+        {label}
+      </label>
       <input
         type={type}
         placeholder={placeholder}
         {...rest}
-        className={`w-full px-4 py-3 rounded-xl border text-sm text-gray-800 placeholder-gray-400 outline-none transition focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-          error
-            ? "border-red-400 bg-red-50 focus:ring-red-400"
-            : "border-gray-200 bg-gray-50 hover:border-gray-300"
-        }`}
+        style={{
+          padding: "13px 16px",
+          borderRadius: 12,
+          border: error ? "1.5px solid #ef4444" : "1.5px solid #e5e7eb",
+          backgroundColor: error ? "#fef2f2" : "#f9fafb",
+          fontSize: 14,
+          color: "#111827",
+          outline: "none",
+          width: "100%",
+          transition: "border 0.2s",
+        }}
+        onFocus={(e) => {
+          e.target.style.border = "1.5px solid #15803d";
+          e.target.style.backgroundColor = "#ffffff";
+        }}
+        onBlur={(e) => {
+          e.target.style.border = error ? "1.5px solid #ef4444" : "1.5px solid #e5e7eb";
+          e.target.style.backgroundColor = error ? "#fef2f2" : "#f9fafb";
+        }}
       />
-
       {error && (
-        <span className="text-red-500 text-xs flex items-center gap-1">
-          ⚠️ {error}
-        </span>
+        <span style={{ fontSize: 12, color: "#ef4444" }}>⚠️ {error}</span>
       )}
     </div>
   );

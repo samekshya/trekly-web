@@ -23,7 +23,7 @@ export default function Navbar() {
   };
 
   if (pathname?.startsWith("/admin")) return null;
-if (pathname === "/login" || pathname === "/register") return null;
+  if (pathname === "/login" || pathname === "/register") return null;
 
   return (
     <header className="bg-white border-b border-gray-100 px-8 py-3 flex items-center justify-between shadow-sm sticky top-0 z-50">
