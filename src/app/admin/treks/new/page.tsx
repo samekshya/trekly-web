@@ -119,7 +119,7 @@ export default function CreateTrekPage() {
               className="w-full border rounded-lg px-3 py-2 bg-white"
             >
               <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
+              <option value="Moderate">Moderate</option>
               <option value="Hard">Hard</option>
             </select>
             <input

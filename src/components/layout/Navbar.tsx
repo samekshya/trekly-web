@@ -36,7 +36,8 @@ export default function Navbar() {
 
   return (
     <header style={{
-      position: "sticky",
+      position: "fixed",
+      width: "100%",
       top: 0,
       zIndex: 50,
       backgroundColor: scrolled || !isHome ? "white" : "transparent",
@@ -53,8 +54,8 @@ export default function Navbar() {
         <Image
           src="/treklylogo.png"
           alt="Trekly"
-          width={38}
-          height={38}
+          width={99}
+          height={99}
           style={{ objectFit: "contain" }}
         />
         <span style={{
@@ -63,7 +64,7 @@ export default function Navbar() {
           color: scrolled || !isHome ? "#15803d" : "white",
           transition: "color 0.3s",
         }}>
-          Trekly
+          
         </span>
       </Link>
 
