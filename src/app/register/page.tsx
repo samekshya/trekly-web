@@ -4,16 +4,14 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/api/api";
-
-
 import AuthShell from "@/components/layout/AuthShell";
 import { InputField } from "@/components/ui/InputField";
-import Button from "@/components/ui/Button";
-import { loginSchema, LoginValues, registerSchema, RegisterValues } from "@/lib/schemas/auth";
-
+import { registerSchema, RegisterValues } from "@/lib/schemas/auth";
+import { useState } from "react";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -30,66 +28,79 @@ export default function RegisterPage() {
   });
 
   const onSubmit = async (values: RegisterValues) => {
-  try {
-    await api.post("/auth/register", {
-      name: values.fullName,
-      email: values.email,
-      password: values.password,
-    });
-
-    router.push("/login");
-  } catch (err: any) {
-    console.log(err?.response?.data || err);
-    alert(err?.response?.data?.message || "Registration failed");
-  }
-};
-
-
-  // const onSubmit = async (values: RegisterValues) => {
-  //   console.log("Register:", values);
-  //   router.push("/login");
-  // };
+    try {
+      setError("");
+      await api.post("/auth/register", {
+        name: values.fullName,
+        email: values.email,
+        password: values.password,
+      });
+      router.push("/login");
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Registration failed");
+    }
+  };
 
   return (
-    <AuthShell title="Create account" subtitle="Register to get started">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{ display: "grid", gap: 12 }}
-      >
+    <AuthShell
+      title="Create account 🏔️"
+      subtitle="Join Trekly and start your adventure"
+      footerText="Already have an account?"
+      footerLink="/login"
+      footerLinkText="Login here"
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {error && (
+          <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-200">
+            {error}
+          </div>
+        )}
+
         <InputField
           label="Full name"
           placeholder="Your name"
-          {...register("fullName")}
           error={errors.fullName?.message}
+          {...register("fullName")}
         />
 
         <InputField
-          label="Email"
+          label="Email address"
           type="email"
           placeholder="you@example.com"
-          {...register("email")}
           error={errors.email?.message}
+          {...register("email")}
         />
 
         <InputField
           label="Password"
           type="password"
           placeholder="••••••••"
-          {...register("password")}
           error={errors.password?.message}
+          {...register("password")}
         />
 
         <InputField
           label="Confirm password"
           type="password"
           placeholder="••••••••"
-          {...register("confirmPassword")}
           error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
         />
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Creating..." : "Create account"}
-        </Button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full bg-green-700 text-white py-3 rounded-xl font-semibold text-base hover:bg-green-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              Creating account...
+            </span>
+          ) : (
+            "Create account"
+          )}
+        </button>
       </form>
     </AuthShell>
   );
