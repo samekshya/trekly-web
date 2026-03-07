@@ -8,12 +8,19 @@ import { useEffect, useState } from "react";
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setUser] = useState<{ name: string; role: string } | null>(null);
+  const [user, setUser, ] = useState<{ name: string; role: string } | null>(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored) setUser(JSON.parse(stored));
   }, [pathname]);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -25,51 +32,133 @@ export default function Navbar() {
   if (pathname?.startsWith("/admin")) return null;
   if (pathname === "/login" || pathname === "/register") return null;
 
+  const isHome = pathname === "/";
+
   return (
-    <header className="bg-white border-b border-gray-100 px-8 py-3 flex items-center justify-between shadow-sm sticky top-0 z-50">
+    <header style={{
+      position: "sticky",
+      top: 0,
+      zIndex: 50,
+      backgroundColor: scrolled || !isHome ? "white" : "transparent",
+      borderBottom: scrolled || !isHome ? "1px solid #f1f5f9" : "none",
+      boxShadow: scrolled ? "0 2px 16px rgba(0,0,0,0.06)" : "none",
+      transition: "all 0.3s ease",
+      padding: "12px 48px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}>
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-2">
+      <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
         <Image
           src="/treklylogo.png"
           alt="Trekly"
-          width={40}
-          height={40}
-          className="object-contain"
+          width={38}
+          height={38}
+          style={{ objectFit: "contain" }}
         />
-        <span className="text-xl font-bold text-green-700">Trekly</span>
+        <span style={{
+          fontSize: 20,
+          fontWeight: 800,
+          color: scrolled || !isHome ? "#15803d" : "white",
+          transition: "color 0.3s",
+        }}>
+          Trekly
+        </span>
       </Link>
 
-      {/* Nav Links */}
-      <nav className="flex items-center gap-6">
-        <Link
-          href="/treks"
-          className="text-gray-600 hover:text-green-700 font-medium transition"
-        >
+      {/* Nav */}
+      <nav style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <Link href="/treks" style={{
+          color: scrolled || !isHome ? "#4b5563" : "rgba(255,255,255,0.9)",
+          fontWeight: 500,
+          fontSize: 15,
+          textDecoration: "none",
+          padding: "8px 16px",
+          borderRadius: 8,
+          transition: "all 0.2s",
+        }}>
           Explore Treks
         </Link>
 
         {user ? (
           <>
-            <Link
-              href="/favourites"
-              className="text-gray-600 hover:text-green-700 font-medium transition"
-            >
-              ❤️ Favourites
-            </Link>
-            <Link
-              href="/dashboard"
-              className="text-gray-600 hover:text-green-700 font-medium transition"
-            >
-              Dashboard
-            </Link>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
-              <span className="text-sm font-medium text-gray-700">{user.name}</span>
+            {user.role === "admin" ? (
+              // Admin navigation
+              <>
+                <Link href="/admin/treks" style={{
+                  backgroundColor: "#16a34a",
+                  color: "white",
+                  padding: "8px 18px",
+                  borderRadius: 8,
+                  fontWeight: 600,
+                  fontSize: 14,
+                  textDecoration: "none",
+                }}>
+                  🔧 Admin Panel
+                </Link>
+              </>
+            ) : (
+              // User navigation
+              <>
+                <Link href="/favourites" style={{
+                  color: scrolled || !isHome ? "#4b5563" : "rgba(255,255,255,0.9)",
+                  fontWeight: 500,
+                  fontSize: 15,
+                  textDecoration: "none",
+                  padding: "8px 16px",
+                  borderRadius: 8,
+                  transition: "all 0.2s",
+                }}>
+                  ❤️ Favourites
+                </Link>
+                <Link href="/dashboard" style={{
+                  color: scrolled || !isHome ? "#4b5563" : "rgba(255,255,255,0.9)",
+                  fontWeight: 500,
+                  fontSize: 15,
+                  textDecoration: "none",
+                  padding: "8px 16px",
+                  borderRadius: 8,
+                  transition: "all 0.2s",
+                }}>
+                  Dashboard
+                </Link>
+              </>
+            )}
+
+            {/* Avatar dropdown */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginLeft: 8 }}>
+              <Link href="/profile" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{
+                  width: 34, height: 34,
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #16a34a, #4ade80)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "white", fontSize: 14, fontWeight: 700,
+                  boxShadow: "0 2px 8px rgba(22,163,74,0.3)",
+                }}>
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <span style={{
+                  fontSize: 14, fontWeight: 600,
+                  color: scrolled || !isHome ? "#374151" : "white",
+                }}>
+                  {user.name.split(" ")[0]}
+                </span>
+              </Link>
               <button
                 onClick={handleLogout}
-                className="text-sm text-red-500 hover:text-red-700 font-medium transition"
+                style={{
+                  fontSize: 13,
+                  color: "#ef4444",
+                  fontWeight: 600,
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "6px 12px",
+                  borderRadius: 8,
+                  transition: "all 0.2s",
+                }}
               >
                 Logout
               </button>
@@ -77,17 +166,29 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <Link
-              href="/login"
-              className="text-gray-600 hover:text-green-700 font-medium transition"
-            >
+            <Link href="/login" style={{
+              color: scrolled || !isHome ? "#4b5563" : "rgba(255,255,255,0.9)",
+              fontWeight: 500,
+              fontSize: 15,
+              textDecoration: "none",
+              padding: "8px 16px",
+              borderRadius: 8,
+              transition: "all 0.2s",
+            }}>
               Login
             </Link>
-            <Link
-              href="/register"
-              className="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-800 transition"
-            >
-              Register
+            <Link href="/register" style={{
+              backgroundColor: "#16a34a",
+              color: "white",
+              padding: "10px 22px",
+              borderRadius: 10,
+              fontWeight: 700,
+              fontSize: 14,
+              textDecoration: "none",
+              boxShadow: "0 2px 8px rgba(22,163,74,0.35)",
+              transition: "all 0.2s",
+            }}>
+              Get Started
             </Link>
           </>
         )}
