@@ -30,9 +30,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   };
 
   const navItems = [
-    { href: "/admin/treks", label: "Treks", icon: "🏔️", sub: "Manage all treks" },
-    { href: "/admin/users", label: "Users", icon: "👥", sub: "Manage accounts" },
-  ];
+  { href: "/admin/analytics", label: "Analytics", icon: "📊", sub: "Overview & insights" },
+  { href: "/admin/treks", label: "Treks", icon: "🏔️", sub: "Manage all treks" },
+  { href: "/admin/users", label: "Users", icon: "👥", sub: "Manage accounts" },
+];
 
   const pageTitle = navItems.find((i) => i.href === pathname)?.label || "Dashboard";
 

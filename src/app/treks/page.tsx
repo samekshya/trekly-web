@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+const TrekMap = dynamic(() => import("@/components/TrekMap"), { ssr: false });
 
 interface Trek {
   _id: string;
@@ -21,6 +23,8 @@ export default function UserTreksPage() {
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("All");
   const [sortBy, setSortBy] = useState("default");
+  const [view, setView] = useState<"grid" | "map">("grid");
+  
 
   useEffect(() => {
     const fetchTreks = async () => {
@@ -206,6 +210,33 @@ export default function UserTreksPage() {
           <option value="duration-asc">Duration: Shortest First</option>
         </select>
 
+        <div style={{ display: "flex", gap: 4, backgroundColor: "#f1f5f9", borderRadius: 10, padding: 4 }}>
+  <button
+    onClick={() => setView("grid")}
+    style={{
+      padding: "8px 14px", borderRadius: 8, border: "none", cursor: "pointer",
+      backgroundColor: view === "grid" ? "white" : "transparent",
+      color: view === "grid" ? "#0f172a" : "#94a3b8",
+      fontWeight: 700, fontSize: 13,
+      boxShadow: view === "grid" ? "0 1px 4px rgba(0,0,0,0.1)" : "none",
+    }}
+  >
+    ⊞ Grid
+  </button>
+  <button
+    onClick={() => setView("map")}
+    style={{
+      padding: "8px 14px", borderRadius: 8, border: "none", cursor: "pointer",
+      backgroundColor: view === "map" ? "white" : "transparent",
+      color: view === "map" ? "#0f172a" : "#94a3b8",
+      fontWeight: 700, fontSize: 13,
+      boxShadow: view === "map" ? "0 1px 4px rgba(0,0,0,0.1)" : "none",
+    }}
+  >
+    🗺️ Map
+  </button>
+</div>
+
         <p style={{ color: "#94a3b8", fontSize: 13, whiteSpace: "nowrap" }}>
           {filtered.length} trek{filtered.length !== 1 ? "s" : ""} found
         </p>
@@ -243,6 +274,8 @@ export default function UserTreksPage() {
               Clear Filters
             </button>
           </div>
+        ) : view === "map" ? (
+          <TrekMap treks={filtered} />
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
             {filtered.map((trek) => {
