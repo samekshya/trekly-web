@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import WeatherCard from "@/components/WeatherCard";
+import ReviewSection from "@/components/ReviewSection";
 
 interface Trek {
   _id: string;
@@ -717,10 +719,15 @@ export default function TrekDetailsPage() {
                 </div>
               </div>
             )}
+
+            {/* Reviews */}
+            <ReviewSection trekId={id as string} />
           </div>
+          
 
           {/* RIGHT - Booking Card */}
           <div>
+            <WeatherCard trekLocation={trek.location} />
             <div style={{
               backgroundColor: "white", borderRadius: 24, padding: "32px",
               border: "1px solid #f1f5f9",
