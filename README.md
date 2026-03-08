@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trekly Web Application (Frontend)
 
-## Getting Started
+## Description
 
-First, run the development server:
+Trekly Web Application is a **React Single Page Application (SPA)** that interacts with the Trekly RESTful backend API.
+The frontend allows users to register, login, and manage application data through an interactive user interface.
 
-```bash
+This project was developed as part of the **Web API Development (ST6003CEM)** coursework.
+
+---
+
+## Tech Stack
+
+* React.js
+* React Router
+* JavaScript / TypeScript
+* Axios / Fetch API
+* CSS / Tailwind / Bootstrap
+* Jest & React Testing Library
+
+---
+
+## Features
+
+* User registration and login interface
+* Authentication with protected routes
+* Create, view, update and delete application data
+* Responsive UI design
+* API integration with backend server
+* Component-based architecture
+* Automated frontend testing
+
+---
+
+## Project Structure
+
+src/
+
+components/ → reusable UI components
+pages/ → application pages
+services/ → API request logic
+routes/ → application routing
+hooks/ → custom hooks
+utils/ → helper utilities
+tests/ → frontend tests
+
+App.js / App.tsx → main application component
+main.js / index.js → application entry point
+
+---
+
+## Installation
+
+Clone the repository
+
+git clone https://github.com/yourusername/trekly-frontend.git
+
+Install dependencies
+
+npm install
+
+---
+
+## Running the Application
+
+Run development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+or
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm start
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application will run at:
 
-## Learn More
+http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Backend API
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The frontend communicates with the Trekly backend API.
 
-## Deploy on Vercel
+Example API base URL:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+http://localhost:5000/api
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Make sure the backend server is running before starting the frontend application.
+
+---
+
+## Running Tests
+
+Run frontend tests
+
+npm run test
+
+Tests are implemented using **React Testing Library and Jest**.
+
+---
+
+## Application Pages
+
+The application includes the following main pages:
+
+* Login page
+* Registration page
+* Dashboard / Home
+* Resource list page
+* Create resource page
+* Edit resource page
+* Profile page
+
+All pages interact with backend APIs to retrieve and update data.
+
+---
+
+## Author
+
+Samikshya Baniya
+Web API Development Coursework
